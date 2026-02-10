@@ -1,0 +1,160 @@
+using ConVar;
+using Facepunch;
+using Facepunch.Models;
+using HarmonyLib;
+using Newtonsoft.Json;
+using Steamworks;
+using Steamworks.Data;
+using System.Diagnostics;
+using System.Reflection;
+using UnityEngine;
+using UnityEngine.UI;
+using static Facepunch.Models.Manifest;
+using static System.Net.Mime.MediaTypeNames;
+using Debug = UnityEngine.Debug;
+using Harmony = HarmonyLib.Harmony;
+using Manifest = Facepunch.Models.Manifest;
+using Text = UnityEngine.UI.Text;
+
+namespace FloridaRust
+{
+    [HarmonyPatch]
+    public class ManifestPatch
+    {
+        private static void HideCategory(ServerBrowserList category)
+        {
+            if (category == null || category.categoryButton == null)
+                return;
+
+            category.categoryButton.enabled = false;
+            category.enabled = false;
+
+            if (category.categoryButton.gameObject != null)
+                category.categoryButton.gameObject.SetActive(false);
+
+            if (category.gameObject != null)
+                category.gameObject.SetActive(false);
+
+            var texts = category.categoryButton.GetComponents<Text>();
+            foreach (var text in texts)
+            {
+                text.text = "";
+            }
+
+            if (category.categoryButton.gameObject != null)
+                UnityEngine.Object.DestroyImmediate(category.categoryButton.gameObject);
+
+            if (category.gameObject != null)
+                UnityEngine.Object.DestroyImmediate(category.gameObject);
+        }
+
+        [HarmonyPatch(typeof(Manifest), "LoadManifest")]
+        internal static class LoadManifestPatch
+        {
+            [HarmonyPrefix]
+            public static bool Prefix(ref string text)
+            {
+                Load(ref text);
+                return true;
+            }
+
+            private static void Load(ref string a)
+            {
+                try
+                {
+                    using (var client = new System.Net.WebClient())
+                    {
+                        a = client.DownloadString("https://raw.githubusercontent.com/Bulbek12/Manifest66/refs/heads/main/Manifest.json");
+                        FloridaRust.manifest123 = JsonConvert.DeserializeObject<Manifest>(a);
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    Debug.LogError($"Failed to load custom manifest: {ex.Message}");
+                }
+            }
+        }
+
+        [HarmonyPatch(typeof(ServerBrowserList), "Refresh")]
+        internal static class ServerBrowserRefreshPatch
+        {
+            [HarmonyPrefix]
+            public static bool Prefix(ServerBrowserList __instance)
+            {
+                if (__instance.name == "Official")
+                {
+                    FloridaRust.browserList123 = __instance;
+                    if (__instance.categoryButton != null && __instance.categoryButton.gameObject != null)
+                        __instance.categoryButton.gameObject.SetActive(false);
+
+                    __instance.showEmpty = true;
+                    return true;
+                }
+                else
+                {
+                    HideCategory(__instance);
+                    return false;
+                }
+            }
+        }
+
+        [HarmonyPatch(typeof(ServerBrowserList), "ServerResponded")]
+        internal static class ServerRespondedPatch
+        {
+            [HarmonyPrefix]
+            public static bool Prefix(ServerBrowserList __instance, ServerInfo server)
+            {
+                if (__instance.name != "Official")
+                {
+                    HideCategory(__instance);
+                    return false;
+                }
+
+                FloridaRust.browserList123 = __instance;
+                FloridaRust.validAddress123 = $"{server.Address}:{server.ConnectionPort}";
+                __instance.showEmpty = true;
+
+                if (__instance.categoryButton != null)
+                    __instance.categoryButton.Dirty();
+
+                return true;
+            }
+        }
+
+        [HarmonyPatch(typeof(ServerInfo), "From")]
+        internal static class ServerSecurePatch
+        {
+            [HarmonyPrefix]
+            public static bool Prefix(ref gameserveritem_t item)
+            {
+                item.Secure = true;
+                return true;
+            }
+        }
+
+        [HarmonyPatch(typeof(Client), "connect")]
+        public static class ConnectPatch
+        {
+            [HarmonyPrefix]
+            public static bool Prefix(ref string address, string protocol)
+            {
+                if (FloridaRust.IsOfficialServer(address))
+                {
+                    return true;
+                }
+                else
+                {
+                    Debug.Log("Вы можете подключиться только на SKL RUST");
+                    return false;
+                }
+            }
+        }
+
+        // Метод для регистрации всех патчей
+        public static void ApplyPatches()
+        {
+            var harmony = new Harmony("com.sklrust.manifestpatch");
+            harmony.PatchAll(Assembly.GetExecutingAssembly());
+        }
+    }
+}
