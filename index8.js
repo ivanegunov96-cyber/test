@@ -93,12 +93,15 @@ window.dispatchEvent(new CustomEvent('setCustomConfig'));
 
 body {
   background-color: var(--bg) !important;
-  background-image: url('') !important;
-  background-size: cover !important;
-  background-position: center top !important;
-  background-attachment: fixed !important;
   font-family: var(--font-body), sans-serif !important;
   -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: -1;
+  background: url('https://i.imgur.com/7037690f.jpeg') center/cover no-repeat;
+  filter: brightness(0.13) blur(4px);
+  transform: scale(1.06);
 }
 body::-webkit-scrollbar { width: 4px; }
 body::-webkit-scrollbar-track { background: #0d0d0d; }
