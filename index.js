@@ -216,6 +216,7 @@ body::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
   position: sticky; top: 90px;
 }
 #fr-content { flex: 1; min-width: 0; }
+.Shop-module__wrapper { margin-top: 0 !important; padding-top: 0 !important; }
 
 /* ── КАРТОЧКА СЕРВЕРА ── */
 .fr-server-card {
@@ -235,19 +236,17 @@ body::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
   font-size: 11px; font-weight: 600; padding: 3px 10px;
   border-radius: 20px; border: 1px solid rgba(61,214,140,0.25);
 }
-.fr-server-body { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+.fr-server-body { display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
 .fr-server-circle {
-  width: 56px; height: 56px; border-radius: 50%;
+  width: 74px; height: 74px; border-radius: 50%;
   border: 3px solid var(--accent);
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  font-family: var(--font-head); font-size: 20px; font-weight: 700; color: var(--accent);
-  box-shadow: 0 0 18px var(--accent-glow);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  flex-shrink: 0; gap: 1px;
+  box-shadow: 0 0 22px var(--accent-glow);
 }
-.fr-server-stats { display: flex; flex-direction: column; gap: 4px; }
-.fr-server-stat { font-size: 12px; color: var(--text-muted); }
-.fr-server-stat span { color: var(--text); font-weight: 500; }
-.fr-server-ip { font-size: 11px; color: var(--text-muted); margin-bottom: 12px; }
-.fr-server-ip span { color: var(--accent); }
+.fr-circle-top { font-family: var(--font-head); font-size: 20px; font-weight: 700; color: var(--accent); line-height: 1; }
+.fr-circle-mid { font-size: 9px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; line-height: 1; margin: 1px 0; }
+.fr-circle-bot { font-family: var(--font-head); font-size: 14px; font-weight: 600; color: var(--text-muted); line-height: 1; }
 .fr-server-btn {
   display: block; width: 100%; background: var(--accent); color: #fff !important;
   border: none; border-radius: var(--radius-sm); padding: 10px;
@@ -306,7 +305,7 @@ body::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
 /* ── КАТЕГОРИИ + ПОИСК ── */
 .Categories-module__categoriesBlock {
   display: flex !important; align-items: center !important;
-  gap: 12px !important; margin-bottom: 4px !important;
+  gap: 12px !important; margin-bottom: 16px !important;
 }
 .Categories-module__categories {
   display: flex !important; flex-wrap: wrap !important;
@@ -314,8 +313,8 @@ body::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
 }
 .Categories-module__category {
   background: transparent !important; border: 1px solid var(--border) !important;
-  color: var(--text-muted) !important; font-size: 12px !important; font-weight: 500 !important;
-  letter-spacing: .5px !important; padding: 7px 18px !important;
+  color: var(--text-muted) !important; font-size: 11px !important; font-weight: 500 !important;
+  letter-spacing: .5px !important; padding: 5px 14px !important;
   border-radius: 20px !important; display: flex !important; align-items: center !important;
   gap: 6px !important; transition: all .2s !important;
 }
@@ -376,21 +375,37 @@ body::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
   text-transform: uppercase !important; margin: 0 !important;
   background-image: none !important; z-index: 2 !important;
 }
+.Product-module__count {
+  position: absolute !important; bottom: 38px !important; right: 8px !important;
+  background: rgba(224,120,48,0.88) !important; color: #fff !important;
+  font-family: var(--font-head) !important; font-size: 11px !important; font-weight: 700 !important;
+  padding: 2px 8px !important; border-radius: 4px !important; z-index: 2 !important;
+  letter-spacing: .5px !important;
+}
+.Product-module__price {
+  background: rgba(224,120,48,0.07) !important;
+  border: 1px solid rgba(224,120,48,0.18) !important;
+  border-radius: 6px !important; margin: 4px 8px 6px !important;
+  padding: 5px 10px !important;
+}
 
 /* ── МОДАЛКИ ── */
 .customModalPosition,
 .ModalLayout-module__positionWrapper {
-  background: rgba(0,0,0,0.75) !important; backdrop-filter: blur(10px) !important;
+  background: rgba(0,0,0,0.82) !important; backdrop-filter: blur(14px) !important;
   align-items: center !important; justify-content: center !important;
 }
 .ModalLayout-module__modal {
-  background: var(--bg-900) !important; border: 1px solid var(--border-accent) !important;
-  border-radius: 18px !important; box-shadow: 0 32px 80px rgba(0,0,0,0.7) !important;
+  background: var(--bg-900) !important;
+  border: 1px solid var(--border-accent) !important;
+  border-radius: 18px !important;
+  box-shadow: 0 0 0 1px rgba(224,120,48,0.08), 0 32px 80px rgba(0,0,0,0.75) !important;
 }
 .customModalContent .boxHeader,
 .ProductModal-module__header,
 .PlayerBalanceModal-module__header {
-  background: var(--bg-800) !important; border-bottom: 1px solid var(--border) !important;
+  background: linear-gradient(135deg, #1a1a1a 0%, #1e1a17 100%) !important;
+  border-bottom: 1px solid var(--border-accent) !important;
   font-family: var(--font-head) !important; font-size: 20px !important;
   font-weight: 700 !important; letter-spacing: 2px !important;
   text-transform: uppercase !important; color: var(--text) !important;
@@ -403,16 +418,38 @@ body::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
 .RouletteContent-module__footer,
 .KitContent-module__footer,
 .customModalContent .boxFooter {
-  background: var(--bg-800) !important; border-top: 1px solid var(--border) !important;
+  background: #161616 !important; border-top: 1px solid var(--border-accent) !important;
   border-radius: 0 0 var(--radius) var(--radius) !important; padding: 16px !important;
 }
 .productModalDescription {
-  background: transparent !important; border-radius: var(--radius-sm) !important;
+  background: rgba(255,255,255,0.02) !important; border-radius: var(--radius-sm) !important;
   color: var(--text-muted) !important; font-size: 14px !important;
   line-height: 1.7 !important; margin: 20px 0 !important;
   border: 1px solid var(--border) !important; padding: 14px !important;
 }
-.productModalImg { filter: drop-shadow(0 4px 16px rgba(224,120,48,0.2)) !important; }
+.productModalImg { filter: drop-shadow(0 4px 20px rgba(224,120,48,0.25)) !important; }
+/* Количество и цена в модалке */
+.CountSelector-module__inputWrapper {
+  background: rgba(224,120,48,0.06) !important;
+  border: 1px solid rgba(224,120,48,0.22) !important; border-radius: var(--radius-sm) !important;
+}
+.CountSelector-module__changeCountBtn {
+  background: rgba(224,120,48,0.12) !important; border: none !important;
+  color: var(--accent) !important; font-weight: 700 !important; transition: background .2s !important;
+}
+.CountSelector-module__changeCountBtn:hover { background: var(--accent) !important; color: #fff !important; }
+.TotalSum-module__inputWrapper {
+  background: rgba(224,120,48,0.06) !important;
+  border: 1px solid rgba(224,120,48,0.22) !important; border-radius: var(--radius-sm) !important;
+}
+.TotalSum-module__currency {
+  color: var(--accent) !important; font-family: var(--font-head) !important;
+  font-weight: 700 !important; padding: 0 10px !important;
+}
+.productModalPrice, [class*="productModalPrice"] {
+  font-family: var(--font-head) !important; font-size: 22px !important;
+  font-weight: 700 !important; color: var(--accent) !important;
+}
 
 /* ── ПОПОЛНЕНИЕ ── */
 .PlayerBalanceModal-module__inputWrapper {
@@ -742,14 +779,14 @@ function injectServerCard(sidebar, serverData) {
   const existing = sidebar.querySelector('.fr-server-card');
   const s = shopConfig.server;
   if (existing && serverData) {
-    const circle = existing.querySelector('.fr-server-circle');
-    const stat   = existing.querySelector('.fr-stat-players');
-    if (circle) circle.textContent = serverData.online ?? '—';
-    if (stat)   stat.innerHTML = `<span>${serverData.online??'—'}</span> из <span>${serverData.maxOnline??'—'}</span>`;
+    const top = existing.querySelector('.fr-circle-top');
+    const bot = existing.querySelector('.fr-circle-bot');
+    if (top) top.textContent = serverData.online ?? '—';
+    if (bot) bot.textContent = serverData.maxOnline ?? '—';
     return;
   }
   if (existing) return;
-  const online = serverData?.online ?? '—', maxOnline = serverData?.maxOnline ?? '—', joining = serverData?.joining ?? 0;
+  const online = serverData?.online ?? '—', maxOnline = serverData?.maxOnline ?? '—';
   const card = document.createElement('div');
   card.className = 'fr-server-card';
   card.innerHTML = `
@@ -758,14 +795,13 @@ function injectServerCard(sidebar, serverData) {
       <span class="fr-server-badge">Онлайн</span>
     </div>
     <div class="fr-server-body">
-      <div class="fr-server-circle">${online}</div>
-      <div class="fr-server-stats">
-        <div class="fr-server-stat">Игроков: <span class="fr-stat-players">${online} из ${maxOnline}</span></div>
-        <div class="fr-server-stat">Подключаются: <span>${joining}</span></div>
+      <div class="fr-server-circle">
+        <span class="fr-circle-top">${online}</span>
+        <span class="fr-circle-mid">из</span>
+        <span class="fr-circle-bot">${maxOnline}</span>
       </div>
     </div>
-    <div class="fr-server-ip">connect: <span>${s.ip}</span></div>
-    <a class="fr-server-btn" href="steam://connect/${s.ip}">Подключиться</a>
+    <button class="fr-server-btn" onclick="navigator.clipboard.writeText('${s.ip}').then(()=>{this.textContent='Скопировано!';setTimeout(()=>this.textContent='Скопировать IP',2000)})">Скопировать IP</button>
   `;
   sidebar.appendChild(card);
 }
@@ -922,6 +958,10 @@ function main() {
         <span style="color:rgba(240,236,228,0.4);">онлайн</span>`;
       playerMenu.insertBefore(badge, playerMenu.firstChild);
     }
+    // Скрыть "МАГАЗИН" из нативного nav
+    document.querySelectorAll('.HeaderNav-module__link, .HeaderNav-module__linkk, .SupportLink-module__link').forEach(a => {
+      if (/^магазин$/i.test(a.textContent.trim())) a.style.display = 'none';
+    });
     // Мобильный nav
     const mobileNav = document.querySelector('.PlayerMenuMobile-module__nav');
     if (mobileNav) {
@@ -980,12 +1020,12 @@ function main() {
     const srv = servers[0]; if (!srv) return;
     const online    = srv.online    ?? srv.players    ?? '—';
     const maxOnline = srv.maxOnline ?? srv.maxPlayers ?? '—';
-    const circle = document.querySelector('.fr-server-circle');
-    const stat   = document.querySelector('.fr-stat-players');
-    const badge  = document.getElementById('fr-online-n');
-    if (circle) circle.textContent = online;
-    if (stat)   stat.textContent = `${online} из ${maxOnline}`;
-    if (badge)  badge.textContent = online;
+    const top   = document.querySelector('.fr-circle-top');
+    const bot   = document.querySelector('.fr-circle-bot');
+    const badge = document.getElementById('fr-online-n');
+    if (top)   top.textContent  = online;
+    if (bot)   bot.textContent  = maxOnline;
+    if (badge) badge.textContent = online;
   });
 
   // PLAYER_LOADED
