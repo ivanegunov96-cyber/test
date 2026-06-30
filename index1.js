@@ -207,7 +207,7 @@ body::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
 /* ── ДВУХКОЛОНОЧНЫЙ МАКЕТ ── */
 #fr-layout {
   display: flex; gap: 20px;
-  max-width: 1380px; margin: 24px auto; padding: 0 20px;
+  width: 100%; margin: 24px 0 0; padding: 0;
   align-items: flex-start;
 }
 #fr-sidebar {
@@ -216,7 +216,8 @@ body::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
   position: sticky; top: 90px;
 }
 #fr-content { flex: 1; min-width: 0; }
-.Shop-module__wrapper { margin-top: 0 !important; padding-top: 0 !important; }
+.Shop-module__wrapper { margin: 0 !important; padding: 0 !important; }
+.Shop-module__wrapper > .boxBody { padding: 0 !important; }
 
 /* ── КАРТОЧКА СЕРВЕРА ── */
 .fr-server-card {
