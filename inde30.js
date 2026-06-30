@@ -99,7 +99,7 @@ body {
 body::before {
   content: '';
   position: fixed; inset: 0; z-index: -1;
-  background: url('https://i.imgur.com/7037690f.jpeg') center/cover no-repeat;
+  background: url('https://i.imgur.com/VTmmRua.jpeg') center/cover no-repeat;
   filter: brightness(0.13) blur(4px);
   transform: scale(1.06);
 }
