@@ -1,29 +1,54 @@
 /* ============================================================
    FloridaRust — index.js
-   Загружается через: cdn.jsdelivr.net/gh/ivanegunov96-cyber/test@main/index.js
+   Загружается: cdn.jsdelivr.net/gh/ivanegunov96-cyber/test@main/index.js
+   База: Claude Design. Архитектура: официальная документация gamestores.
    ============================================================ */
 
 // ── КОНФИГ ───────────────────────────────────────────────────
 const shopConfig = {
-  logoSrc:  'https://i.imgur.com/Z7pHkTx.png', // ← ваш логотип
-  telegram: 'https://t.me/',                    // ← ваш Telegram
-  discord:  'https://discord.gg/',              // ← ваш Discord
-  vk:       'https://vk.com/',                  // ← ваш ВКонтакте
+  logoSrc:  'https://i.postimg.cc/m2tQndyX/logo-64.png', // ← ваш логотип
+  telegram: 'https://t.me/',                              // ← ваш Telegram
+  discord:  'https://discord.gg/',                        // ← ваш Discord
+  vk:       'https://vk.com/',                            // ← ваш ВКонтакте
   server: {
     name: 'FLORIDA x2',
-    ip:   '0.0.0.0:28015',                      // ← IP сервера
+    ip:   '0.0.0.0:28015',                                // ← IP сервера
   },
+  saleBanner: '🔥 &nbsp; SUMMER SALE — СКИДКА 30% НА ВСЕ ПРИВИЛЕГИИ &nbsp; 🔥',
   banners: [
-    'https://placehold.co/1060x280/111111/e07830?text=FLORIDA+RUST',
-    'https://placehold.co/1060x280/111111/ffffff?text=NEW+SEASON',
+    'https://placehold.co/1060x300/1a1a1a/e07830?text=FLORIDA+RUST',
+    'https://placehold.co/1060x300/111111/f0ece4?text=NEW+SEASON',
+    'https://placehold.co/1060x300/181818/e07830?text=PRIVILEGE+%2B+STARTER+PACK',
   ],
   depositTiers: [
-    { amount: 500,  bonus: 10 },
-    { amount: 1000, bonus: 15 },
-    { amount: 2500, bonus: 20 },
-    { amount: 5000, bonus: 25 },
+    { amount: 300,  bonus: 5  },
+    { amount: 600,  bonus: 10 },
+    { amount: 1500, bonus: 15 },
+    { amount: 3000, bonus: 20 },
   ],
-  balanceProblem: 'Проблемы с пополнением? Напишите нам в <a href="https://t.me/" target="_blank">Telegram</a>',
+  balanceProblemText: 'Проблемы с пополнением? Напишите нам в <a href="https://t.me/" target="_blank">Telegram</a>',
+  faq: [
+    {
+      q: 'Как купить привилегию?',
+      a: 'Выберите нужный товар, нажмите «Купить», укажите Steam ID (формат: 76561198xxxxxxxxx) и оплатите удобным способом. Товар выдаётся автоматически в течение 1–5 минут.',
+    },
+    {
+      q: 'Где найти Steam ID?',
+      a: 'Зайдите в Steam → ваш профиль → скопируйте ссылку. Или используйте сайт steamid.io — вставьте ссылку профиля, он покажет ваш SteamID64.',
+    },
+    {
+      q: 'Что делать, если товар не пришёл?',
+      a: 'Убедитесь, что вы находитесь на нужном сервере. Если прошло более 15 минут — напишите в Discord или ВКонтакте, приложите скриншот оплаты.',
+    },
+    {
+      q: 'Действуют ли привилегии после вайпа?',
+      a: 'Привилегии (группы) сохраняются после вайпа. Предметы из китов — нет, они выдаются заново каждый вайп согласно условиям.',
+    },
+    {
+      q: 'Как активировать промокод?',
+      a: 'Введите промокод при пополнении баланса в соответствующее поле. Промокоды действуют только на пополнение, а не на прямую покупку.',
+    },
+  ],
 };
 
 // ── ГЛОБАЛЬНЫЕ НАСТРОЙКИ ПЛАТФОРМЫ ───────────────────────────
@@ -37,25 +62,28 @@ window.dispatchEvent(new CustomEvent('setCustomConfig'));
 
 // ── ИНЖЕКТ CSS ────────────────────────────────────────────────
 (function injectCSS() {
-  const css = `
+  if (document.getElementById('fr-styles')) return;
+  const style = document.createElement('style');
+  style.id = 'fr-styles';
+  style.textContent = `
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
 
 :root {
   --accent:        #e07830;
   --accent-hover:  #f0922e;
-  --accent-glow:   rgba(224,120,48,0.20);
-  --accent-dim:    rgba(224,120,48,0.10);
+  --accent-dim:    rgba(224,120,48,0.12);
+  --accent-glow:   rgba(224,120,48,0.18);
   --bg:            #0d0d0d;
-  --bg-card:       #161616;
-  --bg-elem:       #1e1e1e;
-  --bg-hover:      #252525;
-  --border:        rgba(255,255,255,0.07);
-  --border-accent: rgba(224,120,48,0.30);
+  --bg-700:        #161616;
+  --bg-800:        #1e1e1e;
+  --bg-900:        #111111;
+  --border:        rgba(255,255,255,0.06);
+  --border-accent: rgba(224,120,48,0.25);
   --text:          #f0ece4;
-  --text-muted:    rgba(240,236,228,0.50);
+  --text-muted:    rgba(240,236,228,0.5);
   --green:         #3dd68c;
-  --radius:        10px;
-  --radius-sm:     6px;
+  --radius:        12px;
+  --radius-sm:     8px;
   --font-head:     'Rajdhani', sans-serif;
   --font-body:     'Inter', sans-serif;
   --sidebar-w:     290px;
@@ -64,13 +92,18 @@ window.dispatchEvent(new CustomEvent('setCustomConfig'));
 *, *::before, *::after { box-sizing: border-box; }
 
 body {
-  background: var(--bg) !important;
-  font-family: var(--font-body) !important;
+  background-color: var(--bg) !important;
+  font-family: var(--font-body), sans-serif !important;
   -webkit-font-smoothing: antialiased;
 }
 body::-webkit-scrollbar { width: 4px; }
-body::-webkit-scrollbar-track { background: var(--bg); }
+body::-webkit-scrollbar-track { background: #0d0d0d; }
 body::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+@keyframes fr-pulse   { 0%,100%{opacity:1} 50%{opacity:.4} }
+@keyframes fr-fadein  { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fr-ripple  { to{transform:scale(2.8);opacity:0} }
+@keyframes fr-shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
 
 /* ── СКРЫВАЕМ ЛИШНЕЕ ── */
 .LangSwitcher-module__btn,
@@ -94,362 +127,348 @@ body::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
 /* ── ШАПКА ── */
 .Header-module__wrapper {
   margin: 0 !important;
-  padding: 0 32px !important;
-  height: 64px !important;
+  padding: 0 40px !important;
+  height: 68px !important;
   display: flex !important;
   align-items: center !important;
-  background: rgba(13,13,13,0.97) !important;
-  backdrop-filter: blur(20px) !important;
+  background: rgba(13,13,13,0.96) !important;
+  backdrop-filter: blur(24px) !important;
   border-bottom: 1px solid var(--border-accent) !important;
   position: sticky !important;
   top: 0 !important;
-  z-index: 200 !important;
+  z-index: 100 !important;
+  box-shadow: 0 2px 40px rgba(0,0,0,0.4) !important;
 }
 .Header-module__logoWrapper,
-.Header-module__logoImage { height: 38px !important; width: auto !important; }
+.Header-module__logoImage {
+  height: 42px !important; width: auto !important;
+  filter: drop-shadow(0 0 10px var(--accent-glow)) !important;
+  transition: filter .3s !important;
+}
+.Header-module__logoImage:hover { filter: drop-shadow(0 0 18px rgba(224,120,48,0.5)) !important; }
 .HeaderNav-module__link,
-.SupportLink-module__link {
-  font-size: 11px !important;
-  font-weight: 600 !important;
-  letter-spacing: 1.5px !important;
-  text-transform: uppercase !important;
-  color: var(--text-muted) !important;
-  opacity: 1 !important;
+.SupportLink-module__link,
+.HeaderNav-module__linkk {
+  font-size: 12px !important; font-weight: 500 !important;
+  letter-spacing: 1.5px !important; text-transform: uppercase !important;
+  color: var(--text-muted) !important; opacity: 1 !important;
   transition: color .2s !important;
+  display: flex !important; align-items: center !important; gap: 6px !important;
 }
 .HeaderNav-module__link:hover,
 .SupportLink-module__link:hover { color: var(--accent) !important; }
 .PlayerMenu-module__loginLink {
-  background: var(--accent) !important;
-  color: #fff !important;
-  font-size: 12px !important;
-  font-weight: 600 !important;
-  letter-spacing: 1px !important;
-  padding: 9px 20px !important;
-  border-radius: var(--radius-sm) !important;
+  background: var(--accent) !important; color: #fff !important;
+  font-size: 12px !important; font-weight: 600 !important;
+  letter-spacing: 1.5px !important; text-transform: uppercase !important;
+  padding: 9px 22px !important; border-radius: var(--radius-sm) !important;
   border: none !important;
-  transition: background .2s !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
+  transition: background .2s, box-shadow .2s, transform .2s !important;
 }
-.PlayerMenu-module__loginLink:hover { background: var(--accent-hover) !important; }
+.PlayerMenu-module__loginLink:hover {
+  background: var(--accent-hover) !important;
+  box-shadow: 0 4px 20px var(--accent-glow) !important;
+  transform: translateY(-2px) !important;
+}
 .PlayerBalance-module__btn {
-  background: var(--bg-elem) !important;
-  border: 1px solid var(--border) !important;
-  color: var(--text) !important;
-  font-size: 13px !important;
+  background: var(--bg-800) !important; border: 1px solid var(--border) !important;
+  color: var(--text) !important; font-size: 13px !important;
   border-radius: var(--radius-sm) !important;
-  transition: border-color .2s !important;
+  transition: border-color .2s, box-shadow .2s !important;
 }
-.PlayerBalance-module__btn:hover { border-color: var(--border-accent) !important; }
-.PlayerMenu-module__wrapper { column-gap: 12px !important; }
+.PlayerBalance-module__btn:hover {
+  border-color: var(--border-accent) !important;
+  box-shadow: 0 0 14px var(--accent-dim) !important;
+}
 .PlayerMenu-module__avatar {
-  width: 38px !important; height: 38px !important;
-  border-radius: 50% !important;
+  border-radius: 50% !important; width: 40px !important; height: 40px !important;
   border: 2px solid var(--border-accent) !important;
+  transition: border-color .2s, transform .2s !important; overflow: hidden !important;
+}
+.PlayerMenu-module__avatar:hover { border-color: var(--accent) !important; transform: scale(1.08) !important; }
+.PlayerMenu-module__wrapper { column-gap: 14px !important; }
+
+/* ── СЕЙЛ-БАННЕР ── */
+#fr-sale-banner {
+  background: linear-gradient(90deg, rgba(224,120,48,0.06), rgba(224,120,48,0.16), rgba(224,120,48,0.06));
+  border-bottom: 1px solid rgba(224,120,48,0.2);
+  text-align: center; padding: 10px 16px;
+  font-family: var(--font-head); font-size: 13px; font-weight: 600;
+  letter-spacing: 2px; color: var(--accent); text-transform: uppercase;
+  position: relative; overflow: hidden;
+}
+#fr-sale-banner::after {
+  content: ''; position: absolute; top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+  animation: fr-shimmer 3s linear infinite; background-size: 200% 100%;
 }
 
 /* ── ДВУХКОЛОНОЧНЫЙ МАКЕТ ── */
 #fr-layout {
-  display: flex;
-  gap: 20px;
-  max-width: 1380px;
-  margin: 24px auto;
-  padding: 0 20px;
+  display: flex; gap: 20px;
+  max-width: 1380px; margin: 24px auto; padding: 0 20px;
   align-items: flex-start;
 }
 #fr-sidebar {
-  width: var(--sidebar-w);
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  position: sticky;
-  top: 84px;
+  width: var(--sidebar-w); flex-shrink: 0;
+  display: flex; flex-direction: column; gap: 10px;
+  position: sticky; top: 90px;
 }
 #fr-content { flex: 1; min-width: 0; }
 
 /* ── КАРТОЧКА СЕРВЕРА ── */
 .fr-server-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px;
-  transition: border-color .2s;
+  background: var(--bg-700); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px; transition: border-color .2s;
 }
 .fr-server-card:hover { border-color: var(--border-accent); }
 .fr-server-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 14px;
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;
 }
 .fr-server-name {
-  font-family: var(--font-head);
-  font-size: 15px; font-weight: 700;
-  letter-spacing: 1px; text-transform: uppercase;
-  color: var(--text);
+  font-family: var(--font-head); font-size: 15px; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase; color: var(--text);
 }
 .fr-server-badge {
-  background: rgba(61,214,140,0.15);
-  color: var(--green);
-  font-size: 11px; font-weight: 600;
-  padding: 3px 10px; border-radius: 20px;
-  border: 1px solid rgba(61,214,140,0.3);
+  background: rgba(61,214,140,0.12); color: var(--green);
+  font-size: 11px; font-weight: 600; padding: 3px 10px;
+  border-radius: 20px; border: 1px solid rgba(61,214,140,0.25);
 }
-.fr-server-body {
-  display: flex; align-items: center;
-  gap: 14px; margin-bottom: 14px;
-}
+.fr-server-body { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
 .fr-server-circle {
-  width: 56px; height: 56px;
-  border-radius: 50%;
+  width: 56px; height: 56px; border-radius: 50%;
   border: 3px solid var(--accent);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  font-family: var(--font-head);
-  font-size: 20px; font-weight: 700;
-  color: var(--accent);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  font-family: var(--font-head); font-size: 20px; font-weight: 700; color: var(--accent);
   box-shadow: 0 0 18px var(--accent-glow);
 }
 .fr-server-stats { display: flex; flex-direction: column; gap: 4px; }
 .fr-server-stat { font-size: 12px; color: var(--text-muted); }
 .fr-server-stat span { color: var(--text); font-weight: 500; }
-.fr-server-ip {
-  font-size: 11px; color: var(--text-muted);
-  margin-bottom: 12px; letter-spacing: .5px;
-}
+.fr-server-ip { font-size: 11px; color: var(--text-muted); margin-bottom: 12px; }
 .fr-server-ip span { color: var(--accent); }
 .fr-server-btn {
-  display: block; width: 100%;
-  background: var(--accent);
-  color: #fff !important;
-  border: none; border-radius: var(--radius-sm);
-  padding: 10px;
-  font-family: var(--font-head);
-  font-size: 13px; font-weight: 700;
-  letter-spacing: 2px; text-transform: uppercase;
-  text-align: center; text-decoration: none;
-  cursor: pointer;
+  display: block; width: 100%; background: var(--accent); color: #fff !important;
+  border: none; border-radius: var(--radius-sm); padding: 10px;
+  font-family: var(--font-head); font-size: 13px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; text-align: center;
+  text-decoration: none; cursor: pointer;
   transition: background .2s, box-shadow .2s;
 }
-.fr-server-btn:hover {
-  background: var(--accent-hover);
-  box-shadow: 0 4px 18px var(--accent-glow);
-}
+.fr-server-btn:hover { background: var(--accent-hover); box-shadow: 0 4px 18px var(--accent-glow); }
 
-/* ── САЙДБАР-БЛОКИ (бонусы, соцсети) ── */
+/* ── САЙДБАР-БЛОКИ ── */
 .fr-sidebar-block {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px;
-  transition: border-color .2s;
+  background: var(--bg-700); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px; transition: border-color .2s;
 }
 .fr-sidebar-block:hover { border-color: var(--border-accent); }
 .fr-sidebar-block__title {
-  font-size: 10px; font-weight: 600;
-  letter-spacing: 1.5px; text-transform: uppercase;
-  color: var(--text-muted); margin-bottom: 12px;
+  font-size: 10px; font-weight: 600; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px;
 }
-/* Таблица бонусов */
 .fr-bonus-table { width: 100%; border-collapse: collapse; }
 .fr-bonus-table tr { border-bottom: 1px solid var(--border); }
 .fr-bonus-table tr:last-child { border-bottom: none; }
-.fr-bonus-table td {
-  padding: 7px 4px; font-size: 12px; color: var(--text-muted);
-}
+.fr-bonus-table td { padding: 7px 4px; font-size: 12px; color: var(--text-muted); }
 .fr-bonus-table td:last-child {
-  text-align: right;
-  font-family: var(--font-head);
-  font-size: 14px; font-weight: 700; color: var(--accent);
+  text-align: right; font-family: var(--font-head);
+  font-size: 15px; font-weight: 700; color: var(--accent);
 }
-/* Соцсети */
 .fr-social-btn {
   display: flex; align-items: center; gap: 10px;
-  width: 100%; padding: 10px 14px;
-  background: var(--bg-elem);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  color: var(--text) !important;
-  text-decoration: none;
-  font-size: 13px; font-weight: 500;
+  width: 100%; padding: 10px 12px; margin-bottom: 8px;
+  background: var(--bg-800); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); color: var(--text) !important;
+  text-decoration: none; font-size: 13px; font-weight: 500;
   transition: border-color .2s, background .2s;
-  margin-bottom: 8px;
 }
 .fr-social-btn:last-child { margin-bottom: 0; }
-.fr-social-btn:hover {
-  border-color: var(--border-accent);
-  background: var(--bg-hover);
-}
-.fr-social-btn svg { flex-shrink: 0; }
+.fr-social-btn:hover { border-color: var(--border-accent); background: #252525; }
 
-/* ── СЛАЙДЕР ── */
+/* ── БАННЕР-СЛАЙДЕР ── */
 #fr-swiper-wrap {
-  border-radius: var(--radius);
-  overflow: hidden;
-  margin-bottom: 18px;
+  border-radius: var(--radius); overflow: hidden; margin-bottom: 20px;
 }
-#fr-swiper-wrap .swiper { border-radius: var(--radius); }
-#fr-swiper-wrap .swiper-slide { height: 280px; background: #000; }
+#fr-swiper-wrap .swiper { border-radius: var(--radius); width: 100%; }
+#fr-swiper-wrap .swiper-slide { height: 300px; background: #000; }
 #fr-swiper-wrap .swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
 #fr-swiper-wrap .swiper-button-next,
 #fr-swiper-wrap .swiper-button-prev {
-  color: #fff !important;
-  background: rgba(0,0,0,0.5) !important;
-  width: 36px !important; height: 36px !important;
-  border-radius: 50% !important;
+  color: var(--accent) !important; background: rgba(0,0,0,0.4) !important;
+  width: 40px !important; height: 40px !important; border-radius: 50% !important;
 }
 #fr-swiper-wrap .swiper-button-next:after,
-#fr-swiper-wrap .swiper-button-prev:after { font-size: 12px !important; font-weight: 900 !important; }
+#fr-swiper-wrap .swiper-button-prev:after { font-size: 14px !important; font-weight: 700 !important; }
 #fr-swiper-wrap .swiper-pagination-bullet-active { background: var(--accent) !important; }
 
-/* ── КАТЕГОРИИ ── */
+/* ── КАТЕГОРИИ + ПОИСК ── */
 .Categories-module__categoriesBlock {
   display: flex !important; align-items: center !important;
-  gap: 8px !important; margin: 0 0 16px !important; flex-wrap: wrap !important;
+  gap: 12px !important; margin-bottom: 4px !important;
 }
 .Categories-module__categories {
   display: flex !important; flex-wrap: wrap !important;
-  gap: 6px !important; justify-content: flex-start !important; margin: 0 !important;
+  gap: 8px !important; justify-content: flex-start !important; margin: 0 !important;
 }
 .Categories-module__category {
-  background: var(--bg-card) !important;
-  border: 1px solid var(--border) !important;
-  color: var(--text-muted) !important;
-  font-size: 12px !important; font-weight: 600 !important;
-  letter-spacing: 1px !important; text-transform: uppercase !important;
-  padding: 8px 18px !important; border-radius: 4px !important;
-  transition: all .2s !important;
+  background: transparent !important; border: 1px solid var(--border) !important;
+  color: var(--text-muted) !important; font-size: 12px !important; font-weight: 500 !important;
+  letter-spacing: .5px !important; padding: 7px 18px !important;
+  border-radius: 20px !important; display: flex !important; align-items: center !important;
+  gap: 6px !important; transition: all .2s !important;
 }
-.Categories-module__category:hover {
-  border-color: var(--border-accent) !important; color: var(--text) !important;
-}
+.Categories-module__category:hover { border-color: var(--border-accent) !important; color: var(--accent) !important; }
 .Categories-module__category.Categories-module__active {
-  background: var(--accent) !important;
-  border-color: var(--accent) !important; color: #fff !important;
+  background: var(--accent) !important; border-color: var(--accent) !important; color: #fff !important;
 }
 .Search-module__wrapper {
-  background: var(--bg-card) !important;
-  border: 1px solid var(--border) !important;
-  border-radius: var(--radius-sm) !important;
-  height: 38px !important; margin-left: auto !important;
+  background: var(--bg-700) !important; border: 1px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important; height: 40px !important;
+  transition: border-color .2s !important;
 }
-.Search-module__iconWrapper { background: transparent !important; }
+.Search-module__wrapper:focus-within { border-color: var(--border-accent) !important; }
+.Search-module__iconWrapper { background: transparent !important; color: var(--text-muted) !important; }
 
 /* ── ТОВАРЫ ── */
-.Shop-module__wrapper .boxBody { background: transparent !important; padding: 0 !important; }
+.Shop-module__wrapper .boxBody { background: transparent !important; padding: 0 0 20px !important; }
 .Shop-module__wrapper .boxFooter { background: transparent !important; }
-.Products-module__wrapper { gap: 10px !important; margin-top: 0 !important; }
+.Products-module__wrapper { margin-top: 20px !important; gap: 16px !important; }
 .Product-module__wrapper {
-  background: var(--bg-card) !important;
-  border: 1px solid var(--border) !important;
-  border-radius: var(--radius) !important;
-  min-height: 200px !important;
-  position: relative !important; overflow: hidden !important;
-  background-image: none !important;
-  transition: border-color .2s, transform .2s, box-shadow .2s !important;
-  cursor: pointer !important;
+  background: var(--bg-700) !important; border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important; min-height: 220px !important;
+  display: flex !important; align-items: center !important; justify-content: center !important;
+  position: relative !important; overflow: hidden !important; background-image: none !important;
+  transition: border-color .25s, transform .25s, box-shadow .25s !important;
+  animation: fr-fadein .4s ease both !important;
 }
 .Product-module__wrapper:hover {
-  border-color: var(--border-accent) !important;
-  transform: translateY(-4px) !important;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.5) !important;
+  transform: translateY(-5px) !important; border-color: var(--border-accent) !important;
+  box-shadow: 0 12px 40px rgba(224,120,48,0.1) !important;
 }
 .Product-module__name {
-  font-family: var(--font-head) !important;
-  font-size: 12px !important; font-weight: 700 !important;
-  letter-spacing: .5px !important; text-transform: uppercase !important;
-  color: #fff !important;
-  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%) !important;
-  padding: 20px 8px 8px !important; width: 100% !important;
-  text-align: left !important; box-shadow: none !important;
-  min-height: unset !important; display: flex !important; align-items: flex-end !important;
+  font-family: var(--font-head) !important; font-size: 14px !important; font-weight: 700 !important;
+  letter-spacing: 1px !important; text-transform: uppercase !important; color: #fff !important;
+  background: linear-gradient(to right, #e07830 0%, #f0922e 100%) !important;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.5) !important;
+  padding: 8px 12px !important; min-height: 36px !important;
+  display: flex !important; align-items: center !important; justify-content: center !important;
+  text-align: center !important;
 }
 .Product-module__price {
-  background: transparent !important; border-radius: 0 !important;
-  margin: 0 8px 8px !important; padding: 0 !important;
-  display: flex !important; align-items: center !important; gap: 6px !important;
+  background: var(--bg-800) !important; border-radius: 4px !important;
+  margin: 6px 8px !important; padding: 5px 10px !important;
 }
+.Product-module__wrapper:hover .Product-module__price { background: #252525 !important; }
 .Product-module__price .span__price {
-  font-family: var(--font-head) !important;
-  font-size: 18px !important; font-weight: 700 !important; color: #fff !important;
+  display: flex !important; align-items: baseline !important;
+  gap: 6px !important; justify-content: center !important;
+  font-family: var(--font-head) !important; font-size: 18px !important;
+  font-weight: 700 !important; color: var(--accent) !important; transition: color .2s !important;
 }
+.Product-module__wrapper:hover .Product-module__price .span__price { color: #fff !important; }
 .Product-module__discount {
-  position: static !important;
+  position: absolute !important; top: 8px !important; right: 8px !important;
   background: var(--accent) !important; color: #fff !important;
   font-size: 10px !important; font-weight: 700 !important;
-  padding: 2px 6px !important; border-radius: 3px !important;
+  padding: 3px 8px !important; border-radius: 4px !important;
   text-transform: uppercase !important; margin: 0 !important;
-  background-image: none !important;
+  background-image: none !important; z-index: 2 !important;
 }
 
 /* ── МОДАЛКИ ── */
-.ModalLayout-module__positionWrapper { background: rgba(0,0,0,0.8) !important; backdrop-filter: blur(8px) !important; }
-.ModalLayout-module__modal {
-  background: #161616 !important;
-  border: 1px solid var(--border-accent) !important;
-  border-radius: 14px !important;
-  box-shadow: 0 24px 60px rgba(0,0,0,0.7) !important;
+.customModalPosition,
+.ModalLayout-module__positionWrapper {
+  background: rgba(0,0,0,0.75) !important; backdrop-filter: blur(10px) !important;
+  align-items: center !important; justify-content: center !important;
 }
+.ModalLayout-module__modal {
+  background: var(--bg-900) !important; border: 1px solid var(--border-accent) !important;
+  border-radius: 18px !important; box-shadow: 0 32px 80px rgba(0,0,0,0.7) !important;
+}
+.customModalContent .boxHeader,
 .ProductModal-module__header,
 .PlayerBalanceModal-module__header {
-  background: var(--bg-elem) !important;
-  border-bottom: 1px solid var(--border) !important;
-  font-family: var(--font-head) !important;
-  font-size: 18px !important; font-weight: 700 !important;
-  letter-spacing: 2px !important; text-transform: uppercase !important;
-  color: var(--text) !important;
-  border-radius: var(--radius) var(--radius) 0 0 !important;
-  justify-content: center !important;
+  background: var(--bg-800) !important; border-bottom: 1px solid var(--border) !important;
+  font-family: var(--font-head) !important; font-size: 20px !important;
+  font-weight: 700 !important; letter-spacing: 2px !important;
+  text-transform: uppercase !important; color: var(--text) !important;
+  border-radius: var(--radius) var(--radius) 0 0 !important; justify-content: center !important;
 }
-.ModalLayout-module__modal .boxBody { background: #161616 !important; padding: 20px !important; }
+.ModalLayout-module__modal .boxBody,
+.customModalContent .boxBody { background: var(--bg-900) !important; padding: 24px !important; }
 .ItemContent-module__footer,
-.PlayerBalanceModal-module__footer {
-  background: var(--bg-elem) !important;
-  border-top: 1px solid var(--border) !important;
-  border-radius: 0 0 var(--radius) var(--radius) !important;
+.PlayerBalanceModal-module__footer,
+.RouletteContent-module__footer,
+.KitContent-module__footer,
+.customModalContent .boxFooter {
+  background: var(--bg-800) !important; border-top: 1px solid var(--border) !important;
+  border-radius: 0 0 var(--radius) var(--radius) !important; padding: 16px !important;
 }
-.productModalImg { filter: drop-shadow(0 4px 20px rgba(224,120,48,0.25)) !important; }
 .productModalDescription {
-  background: var(--bg-elem) !important; border-radius: var(--radius-sm) !important;
-  padding: 12px !important; color: var(--text-muted) !important;
-  font-size: 13px !important; border: 1px solid var(--border) !important; margin: 16px 0 !important;
+  background: transparent !important; border-radius: var(--radius-sm) !important;
+  color: var(--text-muted) !important; font-size: 14px !important;
+  line-height: 1.7 !important; margin: 20px 0 !important;
+  border: 1px solid var(--border) !important; padding: 14px !important;
 }
+.productModalImg { filter: drop-shadow(0 4px 16px rgba(224,120,48,0.2)) !important; }
 
 /* ── ПОПОЛНЕНИЕ ── */
 .PlayerBalanceModal-module__inputWrapper {
-  background: var(--bg-elem) !important; border: 1px solid var(--border) !important;
-  border-radius: var(--radius-sm) !important; height: 44px !important;
+  background: var(--bg-700) !important; border: 1px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important; height: 46px !important; transition: border-color .2s !important;
 }
+.PlayerBalanceModal-module__inputWrapper:focus-within { border-color: var(--border-accent) !important; }
 .PlayerBalanceModal-module__currency {
-  background: var(--bg-hover) !important; color: var(--accent) !important;
-  font-weight: 700 !important; padding: 0 12px !important; height: 100% !important;
+  background: var(--bg-800) !important; color: var(--accent) !important;
+  font-family: var(--font-head) !important; font-weight: 700 !important;
+  padding: 0 12px !important; height: 100% !important;
 }
 .PlayerBalanceModal-module__label { display: none !important; }
 .Button-module__btn.Button-module__accent {
   background: var(--accent) !important; color: #fff !important;
-  border: none !important; border-radius: var(--radius-sm) !important;
-  font-weight: 600 !important; transition: background .2s !important;
+  font-weight: 600 !important; letter-spacing: 1px !important;
+  border-radius: var(--radius-sm) !important; border: none !important;
+  transition: background .2s, box-shadow .2s !important;
 }
-.Button-module__btn.Button-module__accent:hover { background: var(--accent-hover) !important; }
+.Button-module__btn.Button-module__accent:hover {
+  background: var(--accent-hover) !important; box-shadow: 0 4px 20px var(--accent-glow) !important;
+}
 .Button-module__btn.Button-module__gray {
-  background: var(--bg-elem) !important; border: 1px solid var(--border) !important;
+  background: var(--bg-800) !important; border: 1px solid var(--border) !important;
   color: var(--text-muted) !important; border-radius: var(--radius-sm) !important;
+  transition: border-color .2s !important;
 }
 .Button-module__btn.Button-module__gray:hover { border-color: var(--accent) !important; color: var(--accent) !important; }
+.Button-module__customBtn {
+  background: var(--accent) !important; border-color: var(--accent) !important;
+  color: #fff !important; border-radius: var(--radius-sm) !important;
+  font-weight: 600 !important; letter-spacing: 1px !important; transition: all .2s !important;
+}
+.Button-module__customBtn:hover {
+  background: var(--accent-hover) !important; border-color: var(--accent-hover) !important;
+  box-shadow: 0 4px 20px var(--accent-glow) !important;
+}
+.TotalSum-module__inputWrapper,
+.CountSelector-module__inputWrapper {
+  background: var(--bg-700) !important; border: 1px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important;
+}
+.CountSelector-module__changeCountBtn {
+  background: var(--bg-800) !important; border: none !important; transition: background .2s !important;
+}
+.CountSelector-module__changeCountBtn:hover { background: var(--accent) !important; color: #fff !important; }
 
 /* Бонус в модалке пополнения */
 .fr-balance-problem {
   background: rgba(224,120,48,0.06); border: 1px solid rgba(224,120,48,0.15);
-  border-radius: var(--radius-sm); padding: 8px 12px;
-  font-size: 12px; color: var(--text-muted); margin-bottom: 14px;
-  text-align: center; line-height: 1.6;
+  border-radius: var(--radius-sm); padding: 8px 12px; font-size: 12px;
+  color: var(--text-muted); margin-bottom: 14px; text-align: center; line-height: 1.6;
 }
 .fr-balance-problem a { color: var(--accent); }
 .fr-deposit-bonus {
-  background: var(--bg-elem); border: 1px solid var(--border);
+  background: var(--bg-800); border: 1px solid var(--border);
   border-radius: var(--radius-sm); padding: 14px; margin-top: 14px;
 }
 .fr-deposit-bonus__title {
@@ -458,7 +477,7 @@ body::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
 }
 .fr-deposit-bonus__tiers { display: flex; gap: 6px; margin-bottom: 10px; }
 .fr-deposit-bonus__tier {
-  flex: 1; background: var(--bg-card); border: 1px solid var(--border);
+  flex: 1; background: var(--bg-700); border: 1px solid var(--border);
   border-radius: var(--radius-sm); padding: 8px 4px; text-align: center; transition: all .2s;
 }
 .fr-deposit-bonus__tier--active { border-color: var(--accent); background: rgba(224,120,48,0.08); }
@@ -472,55 +491,124 @@ body::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
 .fr-deposit-bonus__result-val { font-family: var(--font-head); font-size: 18px; font-weight: 700; color: var(--text); }
 .fr-deposit-bonus__result-bonus { color: var(--accent); font-weight: 600; font-size: 13px; }
 
+/* ── МОНИТОРИНГ ── */
+.MonitoringWidget-module__body.boxBody { background: transparent !important; padding: 0 !important; }
+.MonitoringServer-module__wrapper {
+  background: var(--bg-700) !important; border: 1px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important; padding: 14px 16px !important;
+  max-height: 80px !important; transition: border-color .2s !important;
+}
+.MonitoringServer-module__wrapper:hover { border-color: var(--border-accent) !important; }
+.MonitoringServer-module__progressBarWrapper {
+  background: #1a1a1a !important; border-radius: 20px !important;
+  height: 20px !important; background-image: none !important; animation: none !important;
+}
+.MonitoringServer-module__progressBarAnim {
+  background: linear-gradient(90deg, var(--accent), var(--accent-hover)) !important;
+  border-radius: 20px !important; box-shadow: 0 0 10px var(--accent-glow) !important; animation: none !important;
+}
+
 /* ── ПРОФИЛЬ / ИСТОРИЯ / КОРЗИНА ── */
 .ProfileNav-module__body.boxBody {
-  background: transparent !important; padding: 0 !important;
-  display: flex !important; gap: 6px !important;
+  background: transparent !important; padding: 0 !important; display: flex !important; gap: 6px !important;
 }
 .ProfileNav-module__navItem {
-  background: var(--bg-card) !important; border: 1px solid var(--border) !important;
+  background: var(--bg-700) !important; border: 1px solid var(--border) !important;
   border-radius: var(--radius-sm) !important; color: var(--text-muted) !important;
-  padding: 10px 14px !important; gap: 8px !important; transition: all .2s !important; opacity: 1 !important;
+  padding: 10px 16px !important; gap: 10px !important; transition: all .2s !important; opacity: 1 !important;
 }
-.ProfileNav-module__navItem:hover, .ProfileNav-module__active {
-  border-color: var(--border-accent) !important; color: var(--accent) !important; opacity: 1 !important;
-}
+.ProfileNav-module__navItem:hover,
+.ProfileNav-module__active { border-color: var(--border-accent) !important; color: var(--accent) !important; opacity: 1 !important; }
 .ProfileContent-module__body.boxBody,
 .BasketContent-module__wrapper .boxBody,
-.HistoryContent-module__wrapper .boxBody { background: var(--bg-card) !important; border-radius: var(--radius) !important; }
-.BasketTable-module__tableHeader, .HistoryTable-module__tableHeader { background: var(--bg-elem) !important; border-radius: var(--radius-sm) !important; }
+.HistoryContent-module__wrapper .boxBody { background: var(--bg-700) !important; border-radius: var(--radius) !important; }
+.ProfileContent-module__box { background: var(--bg-800) !important; border-radius: var(--radius-sm) !important; }
+.ProfileContent-module__input {
+  background: var(--bg-800) !important; border: 1px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important; color: var(--text) !important; transition: border-color .2s !important;
+}
+.ProfileContent-module__input:focus { border-color: var(--border-accent) !important; }
+.BasketSearch-module__wrapper, .HistorySearch-module__wrapper {
+  background: var(--bg-800) !important; border: 1px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important;
+}
+.BasketTable-module__tableHeader, .HistoryTable-module__tableHeader {
+  background: var(--bg-800) !important; border-radius: var(--radius-sm) !important;
+  color: var(--text-muted) !important; font-size: 12px !important; letter-spacing: 1px !important;
+}
 .BasketTable-module__tableLine:nth-child(2n-1),
-.HistoryTable-module__tableLine:nth-child(2n-1) { background: var(--bg-elem) !important; border-radius: var(--radius-sm) !important; }
+.HistoryTable-module__tableLine:nth-child(2n-1) { background: var(--bg-800) !important; border-radius: var(--radius-sm) !important; }
 .Pagination-module__page:hover, .Pagination-module__page.Pagination-module__active { color: var(--accent) !important; }
 
-/* ── ДРОПДАУН / КИТ / РУЛЕТКА ── */
-.Selector-module__dropDownCurrentItem { background: var(--bg-elem) !important; border-radius: var(--radius-sm) !important; color: var(--text) !important; }
-.Selector-module__dropDownList { background: var(--bg-elem) !important; border: 1px solid var(--border) !important; border-radius: var(--radius-sm) !important; }
-.Selector-module__dropDownItem:hover, .Selector-module__dropDownItem.Selector-module__active { background: var(--bg-hover) !important; color: var(--accent) !important; }
+/* ── DROPDOWN / КИТ / РУЛЕТКА ── */
+.Selector-module__dropDownCurrentItem, .dropDownCurrentItem {
+  background: var(--bg-800) !important; border-radius: var(--radius-sm) !important; color: var(--text) !important;
+}
+.Selector-module__dropDownList, .dropDownList {
+  background: var(--bg-800) !important; border: 1px solid var(--border) !important; border-radius: var(--radius-sm) !important;
+}
+.Selector-module__dropDownItem:hover, .Selector-module__dropDownItem.Selector-module__active,
+.dropDownItem:hover, .dropDownItem.active { background: var(--bg-700) !important; color: var(--accent) !important; }
 .KitContent-module__containsItem {
-  background: var(--bg-card) !important; border: 1px solid var(--border) !important;
-  border-radius: var(--radius-sm) !important; height: 200px !important; transition: border-color .2s !important;
+  background: var(--bg-700) !important; border: 1px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important; height: 220px !important; transition: border-color .2s !important;
 }
 .KitContent-module__containsItem:hover { border-color: var(--border-accent) !important; }
-.RouletteContent-module__lineWrapper { background: #111 !important; }
-.RouletteContent-module__rouletteItemImg { background: var(--bg-card) !important; border-radius: var(--radius) !important; }
+.ProductItemSelector-module__item {
+  background: var(--bg-700) !important; border: 1px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important; transition: all .2s !important;
+}
+.ProductItemSelector-module__item.ProductItemSelector-module__active,
+.ProductItemSelector-module__item:hover { border-color: var(--accent) !important; }
+.RouletteContent-module__lineWrapper { background: var(--bg-900) !important; }
+.RouletteContent-module__rouletteItemImg { background: var(--bg-700) !important; border-radius: var(--radius) !important; }
+
+/* ── ЗАГРУЗЧИК ── */
+.gs-loader { background: rgba(13,13,13,0.92) !important; backdrop-filter: blur(8px) !important; }
+.gs-loader__spinner {
+  border: none !important; width: 56px !important; height: 56px !important;
+  border-radius: 50% !important; background: var(--accent) !important;
+  background-image: none !important; animation: fr-pulse 1s ease-in-out infinite !important;
+  box-shadow: 0 0 30px var(--accent-glow) !important; margin-top: 0 !important;
+}
 
 /* ── ФУТЕР ── */
 .DesktopCopyright-module__wrapper {
-  background: rgba(13,13,13,0.7) !important;
-  border-radius: 0 var(--radius) 0 0 !important; font-size: 10px !important;
+  background: rgba(13,13,13,0.7) !important; border-radius: 0 var(--radius) 0 0 !important;
+  font-size: 11px !important;
 }
-.DesktopCopyright-module__link { color: var(--accent) !important; }
-.MobileCopyright-module__wrapper { background: var(--bg-card) !important; border-radius: var(--radius) !important; margin-top: 20px !important; }
+.DesktopCopyright-module__text, .DesktopCopyright-module__link { color: var(--text-muted) !important; }
+.DesktopCopyright-module__link:hover { color: var(--accent) !important; }
+.MobileCopyright-module__wrapper { background: var(--bg-700) !important; border-radius: var(--radius) !important; margin-top: 24px !important; }
 .MobileCopyright-module__link { color: var(--accent) !important; }
+.ShopFooter-module__link { color: var(--accent) !important; }
 
 /* ── МОБ. МЕНЮ ── */
-.boxBody.PlayerMenuMobile-module__body { background: #111 !important; }
+.PlayerMenuMobile-module__profileLink, .PlayerMenuMobile-module__loginLink {
+  background: var(--bg-700) !important; border-radius: var(--radius-sm) !important;
+  border: 1px solid var(--border) !important; color: var(--text) !important;
+}
+.boxBody.PlayerMenuMobile-module__body { background: var(--bg-900) !important; }
 
-/* ── АНИМАЦИИ ── */
-@keyframes fr-pulse  { 0%,100%{opacity:1} 50%{opacity:.35} }
-@keyframes fr-ripple { to{transform:scale(2.8);opacity:0} }
-@keyframes fr-fadein { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+/* ── ВИДЖЕТЫ ── */
+.Header-module__wrapper, .Shop-module__wrapper .boxBody,
+.MonitoringWidget-module__body.boxBody, .Shop-module__wrapper .boxFooter,
+.ProfileNav-module__wrapper .boxFooter, .ProfileNav-module__body.boxBody { background-color: transparent !important; }
+.Widgets-module__widgetWrapper .boxBody {
+  background: var(--bg-700) !important; border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important; padding: 16px !important;
+  transition: border-color .2s, transform .2s !important;
+}
+.Widgets-module__widgetWrapper .boxBody:hover {
+  border-color: var(--border-accent) !important; transform: translateY(-2px) !important;
+}
+
+/* ── КОНТЕЙНЕР / ТИПОГРАФИКА ── */
+.container { max-width: 1380px !important; }
+h1, h2, h3 {
+  font-family: var(--font-head) !important; font-weight: 700 !important;
+  text-transform: uppercase !important; letter-spacing: 2px !important; color: var(--text) !important;
+}
 
 /* ── АДАПТИВ ── */
 @media (max-width: 900px) {
@@ -528,31 +616,33 @@ body::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
   #fr-sidebar { width: 100%; position: static; }
 }
 @media (max-width: 600px) {
-  .Header-module__wrapper { padding: 0 12px !important; }
+  .Header-module__wrapper { padding: 0 16px !important; }
   #fr-layout { padding: 0 10px; }
+  .container.swiperContainer { display: none !important; }
 }
   `;
-  const style = document.createElement('style');
-  style.id = 'fr-styles';
-  style.textContent = css;
   document.head.appendChild(style);
 })();
 
 // ── ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ───────────────────────────────────
 
+window.openModal  = id => { const el = document.getElementById(id); if (el) el.classList.add('active'); };
+window.closeModal = id => { const el = document.getElementById(id); if (el) el.classList.remove('active'); };
+
 function initParticles() {
   if (document.getElementById('fr-particles')) return;
   const canvas = document.createElement('canvas');
   canvas.id = 'fr-particles';
-  canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.18;';
+  canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.28;';
   document.body.insertBefore(canvas, document.body.firstChild);
   const ctx = canvas.getContext('2d');
   let W = canvas.width = window.innerWidth, H = canvas.height = window.innerHeight;
   window.addEventListener('resize', () => { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; });
-  const pts = Array.from({ length: 55 }, () => ({
+  const N = 65;
+  const pts = Array.from({ length: N }, () => ({
     x: Math.random()*W, y: Math.random()*H,
-    vx: (Math.random()-.5)*.28, vy: (Math.random()-.5)*.28,
-    r: Math.random()*1.4+.3, o: Math.random()*.4+.1,
+    vx: (Math.random()-.5)*.32, vy: (Math.random()-.5)*.32,
+    r: Math.random()*1.5+.4, o: Math.random()*.5+.1,
   }));
   (function draw() {
     ctx.clearRect(0,0,W,H);
@@ -563,10 +653,10 @@ function initParticles() {
       ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
       ctx.fillStyle=`rgba(224,120,48,${p.o})`; ctx.fill();
     }
-    for(let i=0;i<pts.length;i++) for(let j=i+1;j<pts.length;j++){
-      const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y, d=Math.hypot(dx,dy);
-      if(d<110){ ctx.beginPath(); ctx.moveTo(pts[i].x,pts[i].y); ctx.lineTo(pts[j].x,pts[j].y);
-        ctx.strokeStyle=`rgba(224,120,48,${.06*(1-d/110)})`; ctx.lineWidth=.5; ctx.stroke(); }
+    for(let i=0;i<N;i++) for(let j=i+1;j<N;j++){
+      const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y, d=Math.sqrt(dx*dx+dy*dy);
+      if(d<115){ ctx.beginPath(); ctx.moveTo(pts[i].x,pts[i].y); ctx.lineTo(pts[j].x,pts[j].y);
+        ctx.strokeStyle=`rgba(224,120,48,${.065*(1-d/115)})`; ctx.lineWidth=.5; ctx.stroke(); }
     }
     requestAnimationFrame(draw);
   })();
@@ -574,54 +664,75 @@ function initParticles() {
 
 function initRipple() {
   document.addEventListener('click', e => {
-    const btn = e.target.closest('.Button-module__btn,.PlayerMenu-module__loginLink,.PlayerBalance-module__btn,.fr-server-btn,.fr-social-btn');
+    const btn = e.target.closest('.Button-module__btn,.PlayerMenu-module__loginLink,.PlayerBalance-module__btn,.fr-server-btn');
     if (!btn) return;
     const r = document.createElement('span');
     const rect = btn.getBoundingClientRect();
     const size = Math.max(rect.width, rect.height);
-    r.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px;position:absolute;border-radius:50%;background:rgba(255,255,255,0.15);transform:scale(0);pointer-events:none;animation:fr-ripple 0.5s ease-out forwards;`;
-    btn.style.position = 'relative'; btn.style.overflow = 'hidden';
-    btn.appendChild(r); setTimeout(() => r.remove(), 600);
+    r.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px;position:absolute;border-radius:50%;background:rgba(255,255,255,0.18);transform:scale(0);pointer-events:none;animation:fr-ripple 0.5s ease-out forwards;`;
+    btn.style.position='relative'; btn.style.overflow='hidden';
+    btn.appendChild(r); setTimeout(()=>r.remove(), 600);
   });
 }
 
 function initCardAnimations() {
-  const obs = new IntersectionObserver(entries => {
+  const obs = new IntersectionObserver((entries) => {
     entries.forEach((entry, idx) => {
       if (!entry.isIntersecting) return;
       const el = entry.target;
-      el.style.opacity = '0'; el.style.transform = 'translateY(14px)';
-      setTimeout(() => {
-        el.style.transition = 'opacity .35s ease, transform .35s ease';
-        el.style.opacity = '1'; el.style.transform = 'translateY(0)';
-      }, idx * 40);
+      el.style.opacity='0'; el.style.transform='translateY(18px)';
+      setTimeout(()=>{ el.style.transition='opacity .4s ease,transform .4s ease'; el.style.opacity='1'; el.style.transform='translateY(0)'; }, idx*55);
       obs.unobserve(el);
     });
-  }, { threshold: 0.05 });
-  const observe = () => document.querySelectorAll('.Product-module__wrapper').forEach(el => obs.observe(el));
+  }, { threshold: 0.08 });
+  const observe = () => document.querySelectorAll('.Product-module__wrapper').forEach(el=>obs.observe(el));
   observe();
-  const root = document.querySelector('.Products-module__wrapper, #app');
-  if (root) new MutationObserver(observe).observe(root, { childList: true, subtree: true });
+  const root = document.querySelector('.Products-module__wrapper, main, #app');
+  if (root) new MutationObserver(observe).observe(root, { childList:true, subtree:true });
+}
+
+function addFaqModal() {
+  if (document.getElementById('faqModal')) return;
+  const items = shopConfig.faq.map((f, i) => `
+    <div style="border-bottom:1px solid rgba(255,255,255,0.06);overflow:hidden;">
+      <button onclick="(function(btn){var a=btn.parentElement.querySelector('.fr-faq-ans'),ic=btn.querySelector('.fr-faq-ico'),op=a.style.display==='block';a.style.display=op?'none':'block';ic.style.transform=op?'rotate(0deg)':'rotate(45deg)';})(this)"
+        style="width:100%;background:transparent;border:none;color:#f0ece4;display:flex;align-items:center;justify-content:space-between;padding:18px 0;cursor:pointer;font-size:14px;font-weight:500;text-align:left;gap:12px;">
+        <span style="display:flex;align-items:center;gap:12px;">
+          <span style="font-family:Rajdhani,sans-serif;font-size:17px;font-weight:700;color:#e07830;">${String(i+1).padStart(2,'0')}</span>
+          ${f.q}
+        </span>
+        <span class="fr-faq-ico" style="font-size:20px;color:#e07830;flex-shrink:0;transition:transform .3s;line-height:1;">＋</span>
+      </button>
+      <div class="fr-faq-ans" style="display:none;padding:0 0 18px 30px;font-size:13px;color:rgba(240,236,228,0.55);line-height:1.8;">${f.a}</div>
+    </div>`).join('');
+
+  document.querySelector('main')?.insertAdjacentHTML('beforeend', `
+    <div role="presentation" onmousedown="closeModal('faqModal')" id="faqModal" class="customModalWrapper">
+      <div class="customModalOverflow"><div class="customModalPosition">
+        <div role="presentation" onmousedown="event.stopPropagation()" class="customModalContent" style="max-width:640px;width:100%;">
+          <div class="boxHeader">Как купить</div>
+          <div class="boxBody" style="padding:8px 24px 0;">${items}</div>
+          <div class="boxFooter">
+            <button onclick="closeModal('faqModal')" type="button" class="btn Button-module__btn Button-module__gray">Закрыть</button>
+          </div>
+        </div>
+      </div></div>
+    </div>`);
 }
 
 function buildLayout() {
   if (document.getElementById('fr-layout')) return null;
-  const sidebar = document.createElement('div');
-  sidebar.id = 'fr-sidebar';
-  const content = document.createElement('div');
-  content.id = 'fr-content';
-  const layout = document.createElement('div');
-  layout.id = 'fr-layout';
-  layout.appendChild(sidebar);
-  layout.appendChild(content);
+  const sidebar = document.createElement('div'); sidebar.id = 'fr-sidebar';
+  const content = document.createElement('div'); content.id = 'fr-content';
+  const layout  = document.createElement('div'); layout.id  = 'fr-layout';
+  layout.appendChild(sidebar); layout.appendChild(content);
   const shop = document.querySelector('.Shop-module__wrapper');
   if (shop) {
     const parent = shop.parentNode;
     content.appendChild(shop);
     parent.insertBefore(layout, parent.firstChild);
   } else {
-    const main = document.querySelector('main');
-    if (main) main.insertBefore(layout, main.firstChild);
+    document.querySelector('main')?.insertBefore(layout, document.querySelector('main').firstChild);
   }
   return { sidebar, content };
 }
@@ -634,13 +745,11 @@ function injectServerCard(sidebar, serverData) {
     const circle = existing.querySelector('.fr-server-circle');
     const stat   = existing.querySelector('.fr-stat-players');
     if (circle) circle.textContent = serverData.online ?? '—';
-    if (stat)   stat.innerHTML = `<span>${serverData.online ?? '—'}</span> из <span>${serverData.maxOnline ?? '—'}</span>`;
+    if (stat)   stat.innerHTML = `<span>${serverData.online??'—'}</span> из <span>${serverData.maxOnline??'—'}</span>`;
     return;
   }
   if (existing) return;
-  const online    = serverData?.online    ?? '—';
-  const maxOnline = serverData?.maxOnline ?? '—';
-  const joining   = serverData?.joining   ?? 0;
+  const online = serverData?.online ?? '—', maxOnline = serverData?.maxOnline ?? '—', joining = serverData?.joining ?? 0;
   const card = document.createElement('div');
   card.className = 'fr-server-card';
   card.innerHTML = `
@@ -664,22 +773,15 @@ function injectServerCard(sidebar, serverData) {
 function injectSidebarExtras(sidebar) {
   if (!sidebar || sidebar.querySelector('.fr-bonus-block')) return;
 
-  // Бонусы при пополнении
   const bonusBlock = document.createElement('div');
   bonusBlock.className = 'fr-sidebar-block fr-bonus-block';
   bonusBlock.innerHTML = `
     <div class="fr-sidebar-block__title">Бонус при пополнении</div>
     <table class="fr-bonus-table">
-      ${shopConfig.depositTiers.map(t => `
-        <tr>
-          <td>от ${t.amount} ₽</td>
-          <td>+${t.bonus}%</td>
-        </tr>`).join('')}
-    </table>
-  `;
+      ${shopConfig.depositTiers.map(t=>`<tr><td>от ${t.amount} ₽</td><td>+${t.bonus}%</td></tr>`).join('')}
+    </table>`;
   sidebar.appendChild(bonusBlock);
 
-  // Соцсети
   const socialBlock = document.createElement('div');
   socialBlock.className = 'fr-sidebar-block';
   socialBlock.innerHTML = `
@@ -695,68 +797,58 @@ function injectSidebarExtras(sidebar) {
     <a href="${shopConfig.vk}" target="_blank" class="fr-social-btn">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M13.162 18.994c.609 0 .858-.406.851-.902-.031-1.649.745-2.505 1.986-1.302 1.437 1.393 1.739 2.204 3.446 2.204h2.265c.786 0 1.29-.295 1.04-.886-.484-1.144-3.22-3.877-3.48-4.233-.44-.586-.309-.804 0-1.338l.031-.05c.459-.711 2.822-4.066 3.103-5.038.148-.495-.015-.77-.792-.77h-2.265c-.642 0-.987.338-1.175.707-.175.34-1.43 3.055-2.394 4.492-.45.682-.84.955-1.176.955-.261 0-.588-.275-.588-.963V8.51c0-.682-.23-.994-.838-.994H9.83c-.463 0-.73.338-.73.682 0 .62.959.765 1.057 2.504v3.826c0 .868-.164 1.021-.503 1.021-.914 0-3.163-3.065-4.484-6.558C4.93 8.278 4.602 8 3.95 8H1.684C.956 8 .8 8.338.8 8.707c0 .682 1 4.087 4.658 8.583 2.438 3.065 5.87 4.704 8.984 4.704h1.72v-3z" fill="#4A76A8"/></svg>
       ВКонтакте
-    </a>
-  `;
+    </a>`;
   sidebar.appendChild(socialBlock);
 }
 
 function injectSwiper(content) {
   if (!content || content.querySelector('#fr-swiper-wrap')) return;
   const wrap = document.createElement('div');
-  wrap.id = 'fr-swiper-wrap';
-  wrap.style.opacity = '0'; wrap.style.transition = 'opacity .4s';
+  wrap.id = 'fr-swiper-wrap'; wrap.style.opacity='0'; wrap.style.transition='opacity .5s';
   wrap.innerHTML = `
     <div class="swiper fr-swiper">
       <div class="swiper-wrapper">
-        ${shopConfig.banners.map(src => `<div class="swiper-slide"><img src="${src}" alt="banner"></div>`).join('')}
+        ${shopConfig.banners.map(src=>`<div class="swiper-slide"><img src="${src}" alt="banner"></div>`).join('')}
       </div>
       <div class="swiper-button-next"></div>
       <div class="swiper-button-prev"></div>
       <div class="swiper-pagination"></div>
-    </div>
-  `;
+    </div>`;
   content.insertBefore(wrap, content.firstChild);
   function startSwiper() {
     new Swiper('.fr-swiper', {
-      loop: true,
-      autoplay: { delay: 6000, disableOnInteraction: false },
+      loop: true, autoplay: { delay: 12000, disableOnInteraction: false },
       navigation: { nextEl: '#fr-swiper-wrap .swiper-button-next', prevEl: '#fr-swiper-wrap .swiper-button-prev' },
       pagination: { el: '#fr-swiper-wrap .swiper-pagination', clickable: true },
     });
-    setTimeout(() => { wrap.style.opacity = '1'; }, 100);
+    setTimeout(()=>{ wrap.style.opacity='1'; }, 150);
   }
-  if (window.Swiper) {
-    startSwiper();
-  } else {
+  if (window.Swiper) { startSwiper(); }
+  else {
     if (!document.querySelector('link[href*="swiper"]')) {
-      const css = document.createElement('link');
-      css.rel = 'stylesheet';
-      css.href = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css';
+      const css = document.createElement('link'); css.rel='stylesheet';
+      css.href='https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css';
       document.head.appendChild(css);
     }
     const js = document.createElement('script');
-    js.src = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js';
-    js.onload = startSwiper;
-    document.head.appendChild(js);
+    js.src='https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js';
+    js.onload = startSwiper; document.head.appendChild(js);
   }
 }
 
 function injectDepositBonus(modal) {
   if (!modal || modal.querySelector('.fr-deposit-bonus')) return;
-  const form = modal.querySelector('form');
-  if (!form) return;
+  const form = modal.querySelector('form'); if (!form) return;
   if (!modal.querySelector('.fr-balance-problem')) {
     const prob = document.createElement('div');
-    prob.className = 'fr-balance-problem';
-    prob.innerHTML = shopConfig.balanceProblem;
+    prob.className = 'fr-balance-problem'; prob.innerHTML = shopConfig.balanceProblemText;
     form.parentNode.insertBefore(prob, form);
   }
-  const block = document.createElement('div');
-  block.className = 'fr-deposit-bonus';
+  const block = document.createElement('div'); block.className = 'fr-deposit-bonus';
   block.innerHTML = `
     <div class="fr-deposit-bonus__title">Бонус при пополнении</div>
     <div class="fr-deposit-bonus__tiers">
-      ${shopConfig.depositTiers.map(t => `
+      ${shopConfig.depositTiers.map(t=>`
         <div class="fr-deposit-bonus__tier" data-amount="${t.amount}" data-bonus="${t.bonus}">
           <div class="fr-deposit-bonus__tier-pct">+${t.bonus}%</div>
           <div class="fr-deposit-bonus__tier-amt">от ${t.amount}₽</div>
@@ -764,33 +856,27 @@ function injectDepositBonus(modal) {
     </div>
     <div class="fr-deposit-bonus__result">
       <span>Итого:</span>
-      <span>
-        <span class="fr-deposit-bonus__result-val">0 ₽</span>
-        <span class="fr-deposit-bonus__result-bonus"></span>
-      </span>
-    </div>
-  `;
+      <span><span class="fr-deposit-bonus__result-val">0 ₽</span><span class="fr-deposit-bonus__result-bonus"></span></span>
+    </div>`;
   form.parentNode.insertBefore(block, form.nextSibling);
-  const input = modal.querySelector('input[type="number"], input[name="amount"]');
+  const input = modal.querySelector('input[type="number"],input[name="amount"]');
   if (input) {
     const update = () => {
-      const amount = parseInt(input.value) || 0;
-      const active = shopConfig.depositTiers.slice().reverse().find(t => amount >= t.amount);
-      const bonus  = active ? Math.round(amount * active.bonus / 100) : 0;
-      modal.querySelectorAll('.fr-deposit-bonus__tier').forEach(el => {
-        el.classList.toggle('fr-deposit-bonus__tier--active', !!(active && +el.dataset.amount === active.amount));
+      const amount = parseInt(input.value)||0;
+      const active = shopConfig.depositTiers.slice().reverse().find(t=>amount>=t.amount);
+      const bonus  = active ? Math.round(amount*active.bonus/100) : 0;
+      modal.querySelectorAll('.fr-deposit-bonus__tier').forEach(el=>{
+        el.classList.toggle('fr-deposit-bonus__tier--active', !!(active&&+el.dataset.amount===active.amount));
       });
-      const val = modal.querySelector('.fr-deposit-bonus__result-val');
-      const bon = modal.querySelector('.fr-deposit-bonus__result-bonus');
-      if (val) val.textContent = (amount + bonus) + ' ₽';
-      if (bon) { bon.textContent = bonus > 0 ? `+${bonus} ₽` : ''; bon.style.display = bonus > 0 ? 'inline' : 'none'; }
+      const val=modal.querySelector('.fr-deposit-bonus__result-val'), bon=modal.querySelector('.fr-deposit-bonus__result-bonus');
+      if(val) val.textContent=(amount+bonus)+' ₽';
+      if(bon){ bon.textContent=bonus>0?`+${bonus} ₽`:''; bon.style.display=bonus>0?'inline':'none'; }
     };
-    input.addEventListener('input', update);
-    update();
+    input.addEventListener('input', update); update();
   }
 }
 
-// ── ГЛАВНАЯ ФУНКЦИЯ ───────────────────────────────────────────
+// ── ГЛАВНАЯ ФУНКЦИЯ (по документации — один main()) ───────────
 function main() {
   window.dispatchEvent(new CustomEvent('initState'));
   window.dispatchEvent(new CustomEvent('initComponentsManager'));
@@ -798,70 +884,86 @@ function main() {
 
   // HEADER
   window.componentsManager.addListener('HEADER', 'DID_MOUNT', () => {
+    // Логотип
     const logoW = document.querySelector('.Header-module__logoWrapper');
     if (logoW) {
       const img = document.createElement('img');
-      img.src = shopConfig.logoSrc;
-      img.alt = 'Florida Rust';
+      img.src = shopConfig.logoSrc; img.alt = 'FloridaRust';
       img.className = 'Header-module__logoImage';
+      img.style.cssText = 'height:42px;width:auto;';
       logoW.replaceWith(img);
     }
+    // Кнопка входа
     const loginBtn = document.querySelector('.PlayerMenu-module__loginLink');
     if (loginBtn) loginBtn.textContent = 'Войти';
-
+    // Nav-ссылки
     const nav = document.querySelector('.Header-module__nav, .HeaderNav-module__nav');
     if (nav) {
       [
-        { label: 'Telegram', href: shopConfig.telegram },
-        { label: 'Discord',  href: shopConfig.discord  },
-        { label: 'ВКонтакте', href: shopConfig.vk      },
-      ].forEach(({ label, href }) => {
+        { label: 'FAQ',       action: "openModal('faqModal')", href: '#'              },
+        { label: 'Discord',   href: shopConfig.discord                                },
+        { label: 'ВКонтакте', href: shopConfig.vk                                    },
+      ].forEach(({ label, action, href }) => {
         const a = document.createElement('a');
-        a.className = 'HeaderNav-module__link';
-        a.textContent = label; a.href = href; a.target = '_blank';
+        a.className = 'HeaderNav-module__link'; a.textContent = label;
+        a.href = href || '#'; a.target = href && href !== '#' ? '_blank' : '';
+        if (action) a.setAttribute('onclick', action);
         nav.appendChild(a);
       });
     }
-
+    // Онлайн-бадж
     const playerMenu = document.querySelector('.PlayerMenu-module__wrapper');
     if (playerMenu && !document.getElementById('fr-online')) {
-      const badge = document.createElement('div');
-      badge.id = 'fr-online';
+      const badge = document.createElement('div'); badge.id = 'fr-online';
       badge.style.cssText = 'display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);padding:5px 12px;border-radius:20px;font-size:12px;white-space:nowrap;';
       badge.innerHTML = `
         <span style="width:7px;height:7px;border-radius:50%;background:#3dd68c;display:inline-block;animation:fr-pulse 2s infinite;flex-shrink:0;"></span>
         <span id="fr-online-n" style="color:#3dd68c;font-weight:600;">...</span>
-        <span style="color:rgba(240,236,228,0.4);">онлайн</span>
-      `;
+        <span style="color:rgba(240,236,228,0.4);">онлайн</span>`;
       playerMenu.insertBefore(badge, playerMenu.firstChild);
+    }
+    // Мобильный nav
+    const mobileNav = document.querySelector('.PlayerMenuMobile-module__nav');
+    if (mobileNav) {
+      const a = document.createElement('a'); a.className='HeaderNav-module__link';
+      a.textContent='FAQ'; a.href='#'; a.setAttribute('onclick',"openModal('faqModal')");
+      mobileNav.appendChild(a);
     }
   });
 
   // SHOP PAGE
   window.componentsManager.addListener('SHOP_PAGE', 'DID_MOUNT', () => {
+    // Сейл-баннер
+    if (!document.getElementById('fr-sale-banner')) {
+      const header = document.querySelector('.Header-module__wrapper');
+      if (header) {
+        const banner = document.createElement('div'); banner.id='fr-sale-banner';
+        banner.innerHTML = shopConfig.saleBanner;
+        header.insertAdjacentElement('afterend', banner);
+      }
+    }
+    // Лейаут
     const els     = buildLayout();
     const sidebar = els ? els.sidebar : document.getElementById('fr-sidebar');
     const content = els ? els.content : document.getElementById('fr-content');
     injectServerCard(sidebar, null);
     injectSidebarExtras(sidebar);
     injectSwiper(content);
+    addFaqModal();
     initCardAnimations();
   });
 
   // BALANCE MODAL
   window.componentsManager.addListener('BALANCE_MODAL', 'DID_MOUNT', () => {
-    const modal = document.querySelector(
-      '.PlayerBalanceModal-module__wrapper, .PlayerBalance-module__modal, [class*="BalanceModal"]'
-    );
+    const modal = document.querySelector('.PlayerBalanceModal-module__wrapper, .PlayerBalance-module__modal, [class*="BalanceModal"]');
     if (modal) injectDepositBonus(modal);
   });
 
-  // МОНИТОРИНГ
+  // МОНИТОРИНГ — реальные данные с платформы
   window.eventsManager.addListener('MONITORING_LOADED', (data) => {
     if (!data) return;
     const servers = Array.isArray(data) ? data : (data.servers || [data]);
-    const srv = servers[0];
-    if (!srv) return;
+    const srv = servers[0]; if (!srv) return;
     const serverData = {
       online:    srv.online    ?? srv.players    ?? '—',
       maxOnline: srv.maxOnline ?? srv.maxPlayers ?? '—',
@@ -888,16 +990,12 @@ function main() {
 
   // PLAYER_LOADED
   window.eventsManager.addListener('PLAYER_LOADED', () => {
-    const state = window.getState?.();
-    const player = state?.player?.player;
+    const player = window.getState?.()?.player?.player;
     if (!player) return;
     const profileLink = document.querySelector('.PlayerMenu-module__profileLink');
     if (profileLink && !document.querySelector('.fr-avatar')) {
-      const avatar = document.createElement('div');
-      avatar.className = 'fr-avatar';
-      avatar.style.cssText = 'border-radius:50%;border:2px solid rgba(224,120,48,0.4);width:38px;height:38px;overflow:hidden;cursor:pointer;flex-shrink:0;';
-      avatar.innerHTML = `<img src="${player.avatar}" style="width:100%;height:100%;object-fit:cover;" alt="${player.username}">`;
-      avatar.onclick = () => window.location.href = '/profile';
+      const avatar = document.createElement('div'); avatar.className='fr-avatar';
+      avatar.innerHTML = `<a href="/profile"><img src="${player.avatar}" alt="${player.username}" style="width:40px;height:40px;border-radius:50%;border:2px solid rgba(224,120,48,0.4);object-fit:cover;display:block;"></a>`;
       profileLink.insertAdjacentElement('beforebegin', avatar);
       profileLink.style.display = 'none';
     }
@@ -909,15 +1007,6 @@ function main() {
 
 // ── ЗАПУСК ────────────────────────────────────────────────────
 (function earlyInit() {
-  if (!document.getElementById('fr-kf')) {
-    const s = document.createElement('style');
-    s.id = 'fr-kf';
-    s.textContent = `
-      @keyframes fr-pulse  { 0%,100%{opacity:1} 50%{opacity:.35} }
-      @keyframes fr-ripple { to{transform:scale(2.8);opacity:0} }
-    `;
-    document.head.appendChild(s);
-  }
   initParticles();
   initRipple();
 })();
