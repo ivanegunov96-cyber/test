@@ -93,7 +93,7 @@ window.dispatchEvent(new CustomEvent('setCustomConfig'));
 
 body {
   background-color: var(--bg) !important;
-  background-image: url('https://i.imgur.com/tQ7HDfj.jpeg') !important;
+  background-image: url('') !important;
   background-size: cover !important;
   background-position: center top !important;
   background-attachment: fixed !important;
