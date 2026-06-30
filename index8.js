@@ -16,9 +16,9 @@ const shopConfig = {
   },
   saleBanner: '🔥 &nbsp; SUMMER SALE — СКИДКА 30% НА ВСЕ ПРИВИЛЕГИИ &nbsp; 🔥',
   banners: [
-    'https://placehold.co/1060x300/1a1a1a/e07830?text=FLORIDA+RUST',
-    'https://placehold.co/1060x300/111111/f0ece4?text=NEW+SEASON',
-    'https://placehold.co/1060x300/181818/e07830?text=PRIVILEGE+%2B+STARTER+PACK',
+    'https://files.facepunch.com/paddy/20241204/dec2024_heroposter_01.jpg',
+    'https://files.facepunch.com/paddy/20241104/gesturepack_hero_01.jpg',
+    'https://files.facepunch.com/paddy/20240905/rust_202409_ttk_heroimage.jpg',
   ],
   depositTiers: [
     { amount: 300,  bonus: 5  },
