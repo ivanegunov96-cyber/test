@@ -6,7 +6,7 @@
 
 // ── КОНФИГ ───────────────────────────────────────────────────
 const shopConfig = {
-  logoSrc:  'https://i.postimg.cc/m2tQndyX/logo-64.png', // ← ваш логотип
+  logoSrc:  'https://i.imgur.com/Z7pHkTx.png',
   telegram: 'https://t.me/',                              // ← ваш Telegram
   discord:  'https://discord.gg/',                        // ← ваш Discord
   vk:       'https://vk.com/',                            // ← ваш ВКонтакте
@@ -93,6 +93,10 @@ window.dispatchEvent(new CustomEvent('setCustomConfig'));
 
 body {
   background-color: var(--bg) !important;
+  background-image: url('https://i.imgur.com/tQ7HDfj.jpeg') !important;
+  background-size: cover !important;
+  background-position: center top !important;
+  background-attachment: fixed !important;
   font-family: var(--font-body), sans-serif !important;
   -webkit-font-smoothing: antialiased;
 }
